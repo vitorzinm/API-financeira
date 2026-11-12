@@ -1,15 +1,13 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.up = function(knex) {
-  
+exports.up = function (knex) {
+  return knex.schema.createTable("movimentacoes", (table) => {
+    table.increments("id").primary();
+    table.string("descricao", 255).notNullable();
+    table.decimal("valor", 12, 2).notNullable();
+    table.date("data").notNullable();
+    table.boolean("receita").notNullable();
+  });
 };
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.down = function(knex) {
-  
+exports.down = function (knex) {
+  return knex.schema.dropTableIfExists("movimentacoes");
 };

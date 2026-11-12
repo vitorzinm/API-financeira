@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
-    "migrate:make": "npx knex migrate:make",
-    "migrate": "migrate:latest",
+    "migrate:make": "knex migrate:make",
+    "migrate": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
     "seed:make": "knex seed:make",
     "seed": "knex seed:run"
