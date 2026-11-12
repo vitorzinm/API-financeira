@@ -6,24 +6,58 @@ class MovimentacoesService {
     }
 
     async cadastroMovimentacao(movimentacao) {
+        if (!movimentacao || Object.keys(movimentacao).length === 0) {
+            throw Object.assign(
+                new Error(
+                    "Para o cadastro, é necessário fornecer dados válidos.",
+                ),
+                { statusCode: 400 },
+            );
+        }
         return await movimentacoesRepository.cadastroMovimentacao(movimentacao);
     }
+
     async getIdMovimentacoes(movimentacaoId) {
         return await movimentacoesRepository.getIdMovimentacoes(movimentacaoId);
     }
+
     async deleteIdMovimentacoes(movimentacaoId) {
+        if (!movimentacaoId) {
+            throw Object.assign(new Error("Movimentação não encontrada."), {
+                statusCode: 404,
+            });
+        } else if (movimentacaoId == null || movimentacaoId == undefined) {
+            throw Object.assign(
+                new Error(
+                    "Para o deletar, é necessário fornecer um ID válido.",
+                ),
+                { statusCode: 400 },
+            );
+        }
         return await movimentacoesRepository.deleteIdMovimentacoes(
             movimentacaoId,
         );
-
-        if (!movimentacaoId) {
-            throw new Error("Movimentação não encontrada.");
-        } else if (movimentacaoId === 0) {
-            throw new Error("É necessário informar o ID da movimentação.");
-        }
     }
-    async updateIdMovimentacoes(movimentacaoId, updates) {
-        return await movimentacoesRepository.updateIdMovimentacoes(
+
+    async atualizarIdMovimentacoes(movimentacaoId, updates) {
+        if (!movimentacaoId) {
+            throw Object.assign(new Error("Movimentação não encontrada."), {
+                statusCode: 404,
+            });
+        } else if (movimentacaoId == null || movimentacaoId == undefined) {
+            throw Object.assign(new Error("Movimentação não encontrada."), {
+                statusCode: 404,
+            });
+        }
+        if (!updates || Object.keys(updates).length === 0) {
+            throw Object.assign(
+                new Error(
+                    "Para a atualização, é necessário fornecer dados válidos.",
+                ),
+                { statusCode: 400 },
+            );
+        }
+        return await movimentacoesRepository.atualizarIdMovimentacoes(
             movimentacaoId,
             updates,
         );

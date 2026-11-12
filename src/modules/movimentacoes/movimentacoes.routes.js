@@ -20,7 +20,7 @@ router.delete("/:id", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-    return controller.updateIdMovimentacoes(req, res);
+    return controller.atualizarIdMovimentacoes(req, res);
 });
 
 module.exports = router;

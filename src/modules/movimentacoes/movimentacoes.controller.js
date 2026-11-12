@@ -8,10 +8,8 @@ class MovimentacoesController {
 
             return res.status(200).json(movimentacoes);
         } catch (error) {
-            console.error(error);
-
             return res.status(error.statusCode || 500).json({
-                mensagem: error.message || "Erro ao buscar movimentações.",
+                message: error.message,
             });
         }
     }
@@ -29,9 +27,8 @@ class MovimentacoesController {
 
             return res.status(201).json({ movimentacao });
         } catch (error) {
-            console.log(error);
             return res.status(error.statusCode || 500).json({
-                mensagem: error.message || "Erro ao cadastrar movimentação.",
+                message: error.message,
             });
         }
     }
@@ -43,9 +40,8 @@ class MovimentacoesController {
                 await movimentacoesService.getIdMovimentacoes(id);
             return res.status(200).json({ movimentacaoId });
         } catch (error) {
-            console.log(error);
             return res.status(error.statusCode || 500).json({
-                mensagem: error.message || "Erro ao buscar movimentação.",
+                message: error.message,
             });
         }
     }
@@ -57,19 +53,18 @@ class MovimentacoesController {
                 await movimentacoesService.deleteIdMovimentacoes(id);
             return res.status(200).json({ movimentacaoId });
         } catch (error) {
-            console.log(error);
             return res.status(error.statusCode || 500).json({
-                mensagem: error.message || "Erro ao buscar movimentação.",
+                message: error.message,
             });
         }
     }
 
-    async updateIdMovimentacoes(req, res) {
+    async atualizarIdMovimentacoes(req, res) {
         try {
             const { id } = req.params;
             const { descricao, valor, data, receita } = req.body ?? {};
             const movimentacaoId =
-                await movimentacoesService.updateIdMovimentacoes(id, {
+                await movimentacoesService.atualizarIdMovimentacoes(id, {
                     descricao,
                     valor,
                     data,
@@ -77,9 +72,8 @@ class MovimentacoesController {
                 });
             return res.status(200).json({ movimentacaoId });
         } catch (error) {
-            console.log(error);
             return res.status(error.statusCode || 500).json({
-                mensagem: error.message || "Erro ao atualizar movimentação.",
+                message: error.message,
             });
         }
     }

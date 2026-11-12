@@ -22,7 +22,7 @@ class MovimentacoesRepository {
     async deleteIdMovimentacoes(movimentacaoId) {
         return await this.db("movimentacoes").where("id", movimentacaoId).del();
     }
-    async updateIdMovimentacoes(movimentacaoId, updates) {
+    async atualizarIdMovimentacoes(movimentacaoId, updates) {
         return await this.db("movimentacoes")
             .where("id", movimentacaoId)
             .update(updates);
