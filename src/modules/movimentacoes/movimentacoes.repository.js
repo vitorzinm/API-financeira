@@ -27,6 +27,29 @@ class MovimentacoesRepository {
             .where("id", movimentacaoId)
             .update(updates);
     }
+
+    async movimentacoesDeEntrada() {
+        return await this.db("movimentacoes")
+            .where("receira", true)
+            .select("*");
+    }
+    async movimentacoesDeSaida() {
+        return await this.db("movimentacoes")
+            .where("receira", false)
+            .select("*");
+    }
+
+    async extrato(data) {
+        return this.db("movimentacoes")
+            .where("data", data)
+            .select("receita", "valor");
+    }
+
+    async extratoPendente() {
+        return this.db("movimentacoes")
+            .where("efetivado", false)
+            .select("receita", "valor");
+    }
 }
 
 module.exports = new MovimentacoesRepository(db);

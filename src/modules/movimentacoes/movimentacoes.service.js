@@ -62,6 +62,69 @@ class MovimentacoesService {
             updates,
         );
     }
-}
 
+    async movimentacoesDeEntrada() {
+        return await movimentacoesRepository.movimentacoesDeEntrada();
+    }
+    async movimentacoesDeSaida() {
+        return await movimentacoesRepository.movimentacoesDeSaida();
+    }
+    async extrato(data) {
+        const extrato = await movimentacoesRepository.extrato(data);
+
+        let entradaEmCentavos = 0;
+        let saidaEmCentavos = 0;
+
+        for (const movimentacao of extrato) {
+            const centavos = Math.round(Number(movimentacao.valor) * 100);
+
+            if (Number(movimentacao.receita) === 1) {
+                entradaEmCentavos += centavos;
+            } else {
+                saidaEmCentavos += centavos;
+            }
+        }
+        return {
+            totalDeEntrada: entradaEmCentavos / 100,
+            totalDeSaida: saidaEmCentavos / 100,
+        };
+    }
+
+    async extratoPendente() {
+        const pendentes = await movimentacoesRepository.extratoPendente();
+
+        let entradaEmCentavos = 0;
+        let saidaEmCentavos = 0;
+
+        for (const movimentacao of pendentes) {
+            const centavos = Math.round(Number(movimentacao.valor) * 100);
+
+            if (Number(movimentacao.receita) === 1) {
+                entradaEmCentavos += centavos;
+            } else {
+                saidaEmCentavos += centavos;
+            }
+        }
+
+        let mensagem = "Saldo zerado";
+
+        const saldoEmCentavos = entradaEmCentavos - saidaEmCentavos;
+
+        if (saldoEmCentavos > 0) {
+            mensagem = "Saldo positivo";
+        } else if (saldoEmCentavos < 0) {
+            mensagem = "Saldo negativo";
+        } else {
+            mensagem = "Saldo zerado";
+        }
+        return {
+            totalDeEntrada: entradaEmCentavos / 100,
+            totalDeSaida: saidaEmCentavos / 100,
+            resumoDeExtratoPendente:
+                (entradaEmCentavos - saidaEmCentavos) / 100,
+
+            mensagem: mensagem,
+        };
+    }
+}
 module.exports = new MovimentacoesService();
