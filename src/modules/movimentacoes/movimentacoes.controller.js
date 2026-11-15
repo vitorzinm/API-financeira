@@ -105,8 +105,12 @@ class MovimentacoesController {
     }
     async extrato(req, res) {
         try {
-            const { data } = req.params;
-            const extrato = await movimentacoesService.extrato(data);
+            const { dataInicio, dataFim } = req.query ?? {};
+            const extrato = await movimentacoesService.extrato(
+                dataInicio,
+                dataFim,
+            );
+            console.log("Retorno do service:", extrato);
             return res.status(200).json({ extrato });
         } catch (error) {
             return res.status(error.statusCode || 500).json({

@@ -69,8 +69,41 @@ class MovimentacoesService {
     async movimentacoesDeSaida() {
         return await movimentacoesRepository.movimentacoesDeSaida();
     }
-    async extrato(data) {
-        const extrato = await movimentacoesRepository.extrato(data);
+    async extrato(dataInicio, dataFim) {
+        if (dataFim == null || dataFim == 0 || dataFim == undefined) {
+            dataFim = dataInicio;
+        }
+
+        function dataValida(valor) {
+            if (
+                typeof valor !== "string" ||
+                !/^\d{4}-\d{2}-\d{2}$/.test(valor)
+            ) {
+                return false;
+            }
+
+            const data = new Date(`${valor}T00:00:00.000Z`);
+            return (
+                !Number.isNaN(data.getTime()) &&
+                data.toISOString().slice(0, 10) === valor
+            );
+        }
+
+        if (!dataValida(dataInicio) || !dataValida(dataFim)) {
+            throw Object.assign(
+                new Error("Informe datas válidas no formato AAAA-MM-DD."),
+                { statusCode: 400 },
+            );
+        }
+
+        if (dataInicio > dataFim) {
+            [dataInicio, dataFim] = [dataFim, dataInicio];
+        }
+
+        const extrato = await movimentacoesRepository.extrato(
+            dataInicio,
+            dataFim,
+        );
 
         let entradaEmCentavos = 0;
         let saidaEmCentavos = 0;
@@ -87,6 +120,7 @@ class MovimentacoesService {
         return {
             totalDeEntrada: entradaEmCentavos / 100,
             totalDeSaida: saidaEmCentavos / 100,
+            lucro: (entradaEmCentavos - saidaEmCentavos) / 100,
         };
     }
 

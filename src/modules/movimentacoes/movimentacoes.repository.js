@@ -39,10 +39,10 @@ class MovimentacoesRepository {
             .select("*");
     }
 
-    async extrato(data) {
-        return this.db("movimentacoes")
-            .where("data", data)
-            .select("receita", "valor");
+    async extrato(dataInicio, dataFim) {
+        return await this.db("movimentacoes")
+            .select("*")
+            .whereBetween("data", [dataInicio, dataFim]);
     }
 
     async extratoPendente() {

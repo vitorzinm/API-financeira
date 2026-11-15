@@ -27,7 +27,7 @@ router.get("/movimentacoesDeSaida", (req, res) => {
     return controller.movimentacoesDeSaida(req, res);
 });
 
-router.get("/extrato/:data", (req, res) => {
+router.get("/extrato", (req, res) => {
     return controller.extrato(req, res);
 });
 
