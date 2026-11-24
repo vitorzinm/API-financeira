@@ -1,13 +1,13 @@
+import AppError from '../errors/AppError.js'
 import { movimentacoesRepository } from './movimentacoes.repository.js'
 
 class MovimentacoesService {
   async cadastroMovimentacao(movimentacao) {
-    if (!movimentacao || Object.keys(movimentacao).length === 0) {
-      throw Object.assign(
-        new Error('Para o cadastro, é necessário fornecer dados válidos.'),
-        { statusCode: 400 },
+    if (!movimentacao || Object.keys(movimentacao).length === 0)
+      throw new AppError(
+        'Para o cadastro, é necessário fornecer dados válidos.',
+        400,
       )
-    }
     return await movimentacoesRepository.insertMovimentacao(movimentacao)
   }
 
@@ -28,14 +28,12 @@ class MovimentacoesService {
   }
 
   async getExtrato(dataInicio, dataFim) {
-    if (dataFim == null || dataFim == 0 || dataFim == undefined) {
+    if (dataFim == null || dataFim == 0 || dataFim == undefined)
       dataFim = dataInicio
-    }
 
     function dataValida(valor) {
-      if (typeof valor !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+      if (typeof valor !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(valor))
         return false
-      }
 
       const data = new Date(`${valor}T00:00:00.000Z`)
       return (
@@ -44,16 +42,11 @@ class MovimentacoesService {
       )
     }
 
-    if (!dataValida(dataInicio) || !dataValida(dataFim)) {
-      throw Object.assign(
-        new Error('Informe datas válidas no formato AAAA-MM-DD.'),
-        { statusCode: 400 },
-      )
-    }
+    if (!dataValida(dataInicio) || !dataValida(dataFim))
+      throw new AppError('Informe datas válidas no formato AAAA-MM-DD.', 400)
 
-    if (dataInicio > dataFim) {
-      ;[dataInicio, dataFim] = [dataFim, dataInicio]
-    }
+    if (dataInicio > dataFim);
+    ;[dataInicio, dataFim] = [dataFim, dataInicio]
 
     const extrato = await movimentacoesRepository.listExtrato(
       dataInicio,
@@ -66,12 +59,10 @@ class MovimentacoesService {
     for (const movimentacao of extrato) {
       const centavos = Math.round(Number(movimentacao.valor) * 100)
 
-      if (Number(movimentacao.receita) === 1) {
-        entradaEmCentavos += centavos
-      } else {
-        saidaEmCentavos += centavos
-      }
+      if (Number(movimentacao.receita) === 1) entradaEmCentavos += centavos
+      else saidaEmCentavos += centavos
     }
+
     return {
       totalDeEntrada: entradaEmCentavos / 100,
       totalDeSaida: saidaEmCentavos / 100,
@@ -80,14 +71,12 @@ class MovimentacoesService {
   }
 
   async extratoPendente() {
-    if (dataFim == null || dataFim == 0 || dataFim == undefined) {
+    if (dataFim == null || dataFim == 0 || dataFim == undefined)
       dataFim = dataInicio
-    }
 
     function dataValida(valor) {
-      if (typeof valor !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+      if (typeof valor !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(valor))
         return false
-      }
 
       const data = new Date(`${valor}T00:00:00.000Z`)
       return (
@@ -96,16 +85,11 @@ class MovimentacoesService {
       )
     }
 
-    if (!dataValida(dataInicio) || !dataValida(dataFim)) {
-      throw Object.assign(
-        new Error('Informe datas válidas no formato AAAA-MM-DD.'),
-        { statusCode: 400 },
-      )
-    }
+    if (!dataValida(dataInicio) || !dataValida(dataFim))
+      throw new AppError('Informe datas válidas no formato AAAA-MM-DD.', 400)
 
-    if (dataInicio > dataFim) {
-      ;[dataInicio, dataFim] = [dataFim, dataInicio]
-    }
+    if (dataInicio > dataFim);
+    ;[dataInicio, dataFim] = [dataFim, dataInicio]
 
     const pendentes = await movimentacoesRepository.listExtratoPendente(
       dataInicio,
@@ -140,21 +124,13 @@ class MovimentacoesService {
   }
 
   async atualizarMovimentacao(movimentacaoId, updates) {
-    if (!movimentacaoId) {
-      throw Object.assign(new Error('Movimentação não encontrada.'), {
-        statusCode: 404,
-      })
-    } else if (movimentacaoId == null || movimentacaoId == undefined) {
-      throw Object.assign(new Error('Movimentação não encontrada.'), {
-        statusCode: 404,
-      })
-    }
-    if (!updates || Object.keys(updates).length === 0) {
-      throw Object.assign(
-        new Error('Para a atualização, é necessário fornecer dados válidos.'),
-        { statusCode: 400 },
+    if (!movimentacaoId) throw new AppError('Movimentação não encontrada.', 404)
+    if (!updates || Object.keys(updates).length === 0)
+      throw new AppError(
+        'Para a atualização, é necessário fornecer dados válidos.',
+        400,
       )
-    }
+
     return await movimentacoesRepository.updateMovimentacaoById(
       movimentacaoId,
       updates,
@@ -162,16 +138,8 @@ class MovimentacoesService {
   }
 
   async deletarMovimentacao(movimentacaoId) {
-    if (!movimentacaoId) {
-      throw Object.assign(new Error('Movimentação não encontrada.'), {
-        statusCode: 404,
-      })
-    } else if (movimentacaoId == null || movimentacaoId == undefined) {
-      throw Object.assign(
-        new Error('Para o deletar, é necessário fornecer um ID válido.'),
-        { statusCode: 400 },
-      )
-    }
+    if (!movimentacaoId) throw new AppError('Movimentação não encontrada.', 404)
+
     return await movimentacoesRepository.deleteMovimentacaoById(movimentacaoId)
   }
 }

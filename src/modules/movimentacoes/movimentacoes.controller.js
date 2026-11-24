@@ -2,130 +2,76 @@ import { movimentacoesService } from './movimentacoes.service.js'
 
 class MovimentacoesController {
   async store(req, res) {
-    try {
-      const { descricao, valor, data, receita, efetivado } = req.body ?? {}
+    const { descricao, valor, data, receita, efetivado } = req.body ?? null
 
-      const movimentacao = await movimentacoesService.cadastroMovimentacao({
+    const movimentacao = await movimentacoesService.cadastroMovimentacao({
+      descricao,
+      valor,
+      data,
+      receita,
+      efetivado,
+    })
+
+    return res.status(201).json({ movimentacao })
+  }
+
+  async show(req, res) {
+    const { id } = req.params
+
+    const movimentacaoId = await movimentacoesService.getMovimentacaoById(id)
+    return res.status(200).json({ movimentacaoId })
+  }
+
+  async index(req, res) {
+    const movimentacoes = await movimentacoesService.getAllMovimentacoes()
+    return res.status(200).json(movimentacoes)
+  }
+
+  async movimentacoesDeEntrada(req, res) {
+    const movimentacoesDeEntrada =
+      await movimentacoesService.movimentacoesDeEntrada()
+    return res.status(200).json({ movimentacoesDeEntrada })
+  }
+
+  async movimentacoesDeSaida(req, res) {
+    const movimentacoesDeSaida =
+      await movimentacoesService.movimentacoesDeSaida()
+    return res.status(200).json({ movimentacoesDeSaida })
+  }
+
+  async extrato(req, res) {
+    const { dataInicio, dataFim } = req.query ?? {}
+    const extrato = await movimentacoesService.getExtrato(dataInicio, dataFim)
+    console.log('Retorno do service:', extrato)
+    return res.status(200).json({ extrato })
+  }
+
+  async extratoPendente(req, res) {
+    const { dataIncio, dataFim } = req.query ?? {}
+    const extratoPendente = await movimentacoesService.getExtratoPendente()
+    return res.status(200).json({ extratoPendente })
+  }
+
+  async update(req, res) {
+    const { id } = req.params
+    const { descricao, valor, data, receita, efetivado } = req.body ?? {}
+    const movimentacaoId = await movimentacoesService.atualizarMovimentacao(
+      id,
+      {
         descricao,
         valor,
         data,
         receita,
         efetivado,
-      })
-
-      return res.status(201).json({ movimentacao })
-    } catch (error) {
-      return res.status(error.statusCode || 500).json({
-        message: error.message,
-      })
-    }
-  }
-
-  async show(req, res) {
-    try {
-      const { id } = req.params
-
-      const movimentacaoId = await movimentacoesService.getMovimentacaoById(id)
-      return res.status(200).json({ movimentacaoId })
-    } catch (error) {
-      return res.status(error.statusCode || 500).json({
-        message: error.message,
-      })
-    }
-  }
-
-  async index(req, res) {
-    try {
-      const movimentacoes = await movimentacoesService.getAllMovimentacoes()
-
-      return res.status(200).json(movimentacoes)
-    } catch (error) {
-      return res.status(error.statusCode || 500).json({
-        message: error.message,
-      })
-    }
-  }
-
-  async movimentacoesDeEntrada(req, res) {
-    try {
-      const movimentacoesDeEntrada =
-        await movimentacoesService.movimentacoesDeEntrada()
-      return res.status(200).json({ movimentacoesDeEntrada })
-    } catch (error) {
-      return res.status(error.statusCode || 500).json({
-        message: error.message,
-      })
-    }
-  }
-  async movimentacoesDeSaida(req, res) {
-    try {
-      const movimentacoesDeSaida =
-        await movimentacoesService.movimentacoesDeSaida()
-      return res.status(200).json({ movimentacoesDeSaida })
-    } catch (error) {
-      return res.status(error.statusCode || 500).json({
-        message: error.message,
-      })
-    }
-  }
-
-  async extrato(req, res) {
-    try {
-      const { dataInicio, dataFim } = req.query ?? {}
-      const extrato = await movimentacoesService.getExtrato(dataInicio, dataFim)
-      console.log('Retorno do service:', extrato)
-      return res.status(200).json({ extrato })
-    } catch (error) {
-      return res.status(error.statusCode || 500).json({
-        message: error.message,
-      })
-    }
-  }
-
-  async extratoPendente(req, res) {
-    try {
-      const { dataIncio, dataFim } = req.query ?? {}
-      const extratoPendente = await movimentacoesService.getExtratoPendente()
-      return res.status(200).json({ extratoPendente })
-    } catch (error) {
-      return res.status(error.statusCode || 500).json({
-        message: error.message,
-      })
-    }
-  }
-
-  async update(req, res) {
-    try {
-      const { id } = req.params
-      const { descricao, valor, data, receita, efetivado } = req.body ?? {}
-      const movimentacaoId = await movimentacoesService.atualizarMovimentacao(
-        id,
-        {
-          descricao,
-          valor,
-          data,
-          receita,
-          efetivado,
-        },
-      )
-      return res.status(200).json({ movimentacaoId })
-    } catch (error) {
-      return res.status(error.statusCode || 500).json({
-        message: error.message,
-      })
-    }
+      },
+    )
+    return res.status(200).json({ movimentacaoId })
   }
 
   async destroy(req, res) {
-    try {
-      const { id } = req.params
-      const movimentacaoId = await movimentacoesService.deletarMovimentacao(id)
-      return res.status(200).json({ movimentacaoId })
-    } catch (error) {
-      return res.status(error.statusCode || 500).json({
-        message: error.message,
-      })
-    }
+    const { id } = req.params
+    const movimentacaoId = await movimentacoesService.deletarMovimentacao(id)
+    return res.status(200).json({ movimentacaoId })
   }
 }
 
