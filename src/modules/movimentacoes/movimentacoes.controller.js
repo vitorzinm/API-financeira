@@ -121,6 +121,7 @@ class MovimentacoesController {
 
     async extratoPendente(req, res) {
         try {
+            const {dataIncio, dataFim} = req.query ?? {};
             const extratoPendente =
                 await movimentacoesService.extratoPendente();
             return res.status(200).json({ extratoPendente });

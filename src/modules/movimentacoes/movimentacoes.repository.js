@@ -48,6 +48,7 @@ class MovimentacoesRepository {
     async extratoPendente() {
         return this.db("movimentacoes")
             .where("efetivado", false)
+            .whereBetween("data", [dataInicio, dataFim])
             .select("receita", "valor");
     }
 }
