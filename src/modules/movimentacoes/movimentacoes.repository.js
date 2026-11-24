@@ -1,56 +1,56 @@
-const db = require("../../config/database");
+import { db } from '../../config/database.js'
 
 class MovimentacoesRepository {
-    constructor(db) {
-        this.db = db;
-    }
+  constructor(db) {
+    this.db = db
+  }
 
-    async getAllMovimentacoes() {
-        return await this.db("movimentacoes").select("*");
-    }
+  async insertMovimentacao(movimentacao) {
+    return await this.db('movimentacoes').insert(movimentacao)
+  }
 
-    async cadastroMovimentacao(movimentacao) {
-        return await this.db("movimentacoes").insert(movimentacao);
-    }
+  async findMovimentacaoById(movimentacaoId) {
+    return await this.db('movimentacoes')
+      .select('*')
+      .where('id', movimentacaoId)
+      .first()
+  }
 
-    async getIdMovimentacoes(movimentacaoId) {
-        return await this.db("movimentacoes")
-            .select("*")
-            .where("id", movimentacaoId)
-            .first();
-    }
-    async deleteIdMovimentacoes(movimentacaoId) {
-        return await this.db("movimentacoes").where("id", movimentacaoId).del();
-    }
-    async atualizarIdMovimentacoes(movimentacaoId, updates) {
-        return await this.db("movimentacoes")
-            .where("id", movimentacaoId)
-            .update(updates);
-    }
+  async listMovimentacaoes() {
+    return await this.db('movimentacoes').select('*')
+  }
 
-    async movimentacoesDeEntrada() {
-        return await this.db("movimentacoes")
-            .where("receira", true)
-            .select("*");
-    }
-    async movimentacoesDeSaida() {
-        return await this.db("movimentacoes")
-            .where("receira", false)
-            .select("*");
-    }
+  async listMovimentacoesDeEntrada() {
+    return await this.db('movimentacoes').where('receita', true).select('*')
+  }
 
-    async extrato(dataInicio, dataFim) {
-        return await this.db("movimentacoes")
-            .select("*")
-            .whereBetween("data", [dataInicio, dataFim]);
-    }
+  async listMovimentacoesDeSaida() {
+    return await this.db('movimentacoes').where('receita', false).select('*')
+  }
 
-    async extratoPendente() {
-        return this.db("movimentacoes")
-            .where("efetivado", false)
-            .whereBetween("data", [dataInicio, dataFim])
-            .select("receita", "valor");
-    }
+  async listExtrato(dataInicio, dataFim) {
+    return await this.db('movimentacoes')
+      .select('*')
+      .whereBetween('data', [dataInicio, dataFim])
+  }
+
+  async listExtratoPendente() {
+    return this.db('movimentacoes')
+      .where('efetivado', false)
+      .whereBetween('data', [dataInicio, dataFim])
+      .select('receita', 'valor')
+  }
+
+  async updateMovimentacaoById(movimentacaoId, updates) {
+    return await this.db('movimentacoes')
+      .where('id', movimentacaoId)
+      .update(updates)
+  }
+
+  async deleteMovimentacaoById(movimentacaoId) {
+    return await this.db('movimentacoes').where('id', movimentacaoId).del()
+  }
 }
 
-module.exports = new MovimentacoesRepository(db);
+const movimentacoesRepository = new MovimentacoesRepository(db)
+export { movimentacoesRepository }

@@ -1,12 +1,16 @@
-const express = require("express");
-const app = express();
+import express from 'express'
+import { configDotenv } from 'dotenv'
+import { router } from './modules/movimentacoes/movimentacoes.routes.js'
 
-app.use(express.json());
+configDotenv()
 
-const movimentacoesRoutes = require("./modules/movimentacoes/movimentacoes.routes");
+const app = express()
+const PORT = process.env.APP_PORT
 
-app.use("/movimentacoes", movimentacoesRoutes);
+app.use(express.json())
 
-app.listen(3000, () => {
-    console.log("Servidor rodando na porta 3000");
-});
+app.use('/', router)
+
+app.listen(PORT, () => {
+  console.log(`API rodando em http://localhost:${PORT}`)
+})

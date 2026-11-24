@@ -1,24 +1,29 @@
 {
   "name": "api-finaceira",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API financeira para gerenciamento de transações",
+  "main": "app.js",
   "scripts": {
     "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "migrate:make": "knex migrate:make",
     "migrate": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
     "seed:make": "knex seed:make",
     "seed": "knex seed:run"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "api",
+    "financeira"
+  ],
+  "author": "Vitor Hugo Farias",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "dotenv": "^18.0.10",
     "express": "^5.3.0",
     "knex": "^3.3.0",
-    "mysql2": "^3.24.6"
+    "mysql2": "^3.24.6",
+    "nodemon": "^3.1.14"
   }
 }
