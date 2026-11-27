@@ -1,4 +1,4 @@
-import { usuariosService } from './usuarios.sevices.js'
+import { usuariosService } from '../services/usuarioSevices.js'
 
 class UsuariosController {
   async store(req, res) {
@@ -15,6 +15,13 @@ class UsuariosController {
 
   async index(req, res) {
     const usuarios = await usuariosService.listarUsuarios()
+
+    return res.status(201).json({ usuarios })
+  }
+
+  async show(req, res) {
+    const { id } = req.params
+    const usuarios = await usuariosService.getUsuariosById()
 
     return res.status(201).json({ usuarios })
   }
@@ -37,7 +44,6 @@ class UsuariosController {
     const { id } = req.params
 
     const usuarios = await usuariosService.deletarUsuarios(id)
-    console.log('controller')
 
     return res.status(200).json({ usuarios })
   }

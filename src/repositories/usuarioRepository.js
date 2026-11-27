@@ -1,4 +1,4 @@
-import { db } from '../../config/database.js'
+import { db } from '../config/database.js'
 
 class UsuariosRepository {
   constructor(db) {
@@ -15,6 +15,10 @@ class UsuariosRepository {
 
   async listUsarios() {
     return await this.db('usuarios').select('*')
+  }
+
+  async listUsuariosById(usuarios) {
+    return await this.db('usuaios').select('usuarios', usuarios)
   }
   async updateUsuarios(id, updates) {
     return await this.db('usuarios').where('id', id).update(updates)

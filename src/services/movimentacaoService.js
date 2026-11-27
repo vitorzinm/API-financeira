@@ -1,5 +1,5 @@
 import AppError from '../errors/AppError.js'
-import { movimentacoesRepository } from './movimentacoes.repository.js'
+import { movimentacoesRepository } from '../repositories/movimentacaoRepository.js'
 
 class MovimentacoesService {
   validarId(id, campo = 'ID') {

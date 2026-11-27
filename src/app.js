@@ -1,8 +1,7 @@
 import express from 'express'
 import { configDotenv } from 'dotenv'
-import { router as movimentacoesRouter } from './modules/movimentacoes/movimentacoes.routes.js'
-import { router as usuariosRouter } from './modules/usuarios/usuarios.routes.js'
-import { errorMiddleware } from './modules/errors/errorMiddleware.js'
+import { router } from './routes/routes.js'
+import { errorMiddleware } from './errors/errorMiddleware.js'
 
 configDotenv()
 
@@ -11,8 +10,7 @@ const PORT = process.env.APP_PORT || 4000
 
 app.use(express.json())
 
-app.use('/usuarios', usuariosRouter)
-app.use('/movimentacoes', movimentacoesRouter)
+app.use('/', router)
 
 app.use(errorMiddleware)
 

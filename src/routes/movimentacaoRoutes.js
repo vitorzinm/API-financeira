@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
 
-import { movimentacoesController as controller } from './movimentacoes.controller.js'
+import { movimentacoesController as controller } from '../controllers/movimentacaoController.js'
 
 router.post('/', controller.store) //aplicado a integração com tabela usuarios
 // router.get('/', controller.index)
@@ -19,4 +19,4 @@ router.get('/usuario/:usuario_id', controller.showByUserId) //aplicado a integra
 router.put('/:id/:usuario_id', controller.update) //aplicado a integração com tabela usuarios
 router.delete('/:id/:usuario_id', controller.destroy) //aplicado a integração com tabela usuarios
 
-export { router }
+export { router as movimentacaoRoutes }

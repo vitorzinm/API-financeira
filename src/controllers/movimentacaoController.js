@@ -1,4 +1,4 @@
-import { movimentacoesService } from './movimentacoes.service.js'
+import { movimentacoesService } from '../services/movimentacaoService.js'
 
 class MovimentacoesController {
   async store(req, res, next) {

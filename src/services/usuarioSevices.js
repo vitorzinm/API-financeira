@@ -1,5 +1,5 @@
 import AppError from '../errors/AppError.js'
-import { usuariosRepository } from './usuarios.repository.js'
+import { usuariosRepository } from '../repositories/usuarioRepository.js'
 
 class UsuariosService {
   validarId(id) {
@@ -35,6 +35,10 @@ class UsuariosService {
 
   async listarUsuarios() {
     return await usuariosRepository.listUsarios()
+  }
+
+  async getUsuariosById(usuarios) {
+    return await usuariosRepository.listUsuariosById(usuarios)
   }
 
   async atualizarUsuarios(id, updates) {
