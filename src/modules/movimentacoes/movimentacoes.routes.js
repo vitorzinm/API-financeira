@@ -3,14 +3,20 @@ const router = express.Router()
 
 import { movimentacoesController as controller } from './movimentacoes.controller.js'
 
-router.post('/', controller.store)
-router.get('/', controller.index)
-router.get('/movimentacoesDeEntrada', controller.movimentacoesDeEntrada)
-router.get('/movimentacoesDeSaida', controller.movimentacoesDeSaida)
-router.get('/extrato', controller.extrato)
-router.get('/extratoPendente', controller.extratoPendente)
-router.get('/:id', controller.show)
-router.put('/:id', controller.update)
-router.delete('/:id', controller.destroy)
+router.post('/', controller.store) //aplicado a integração com tabela usuarios
+// router.get('/', controller.index)
+
+router.get(
+  '/movimentacoesDeEntrada/:usuario_id',
+  controller.movimentacoesDeEntrada,
+) //aplicado a integração com tabela usuarios
+
+router.get('/movimentacoesDeSaida/:usuario_id', controller.movimentacoesDeSaida) //aplicado a integração com tabela usuarios
+router.get('/extrato', controller.extrato) //aplicado a integração com tabela usuarios
+router.get('/extratoPendente', controller.extratoPendente) //aplicado a integração com tabela usuarios
+router.get('/:id', controller.showByMovimentacaoId)
+router.get('/usuario/:usuario_id', controller.showByUserId) //aplicado a integração com tabela usuarios
+router.put('/:id/:usuario_id', controller.update) //aplicado a integração com tabela usuarios
+router.delete('/:id/:usuario_id', controller.destroy) //aplicado a integração com tabela usuarios
 
 export { router }

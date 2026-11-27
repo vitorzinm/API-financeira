@@ -1,6 +1,14 @@
 export function errorMiddleware(err, req, res, next) {
-  const statusCode = err.statusCode
-  const message = err.message
+  if (res.headersSent) {
+    return next(err)
+  }
 
-  return res.json({ message }).status(statusCode)
+  const statusCode = err.statusCode || 500
+  const message = statusCode === 500 ? 'Erro interno do servidor.' : err.message
+
+  if (statusCode === 500) {
+    console.error(err)
+  }
+
+  return res.status(statusCode).json({ message })
 }
