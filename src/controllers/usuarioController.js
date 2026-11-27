@@ -14,6 +14,7 @@ class UsuariosController {
   }
 
   async index(req, res) {
+    const page = req.query.page || 1
     const usuarios = await usuariosService.listarUsuarios()
 
     return res.status(201).json({ usuarios })

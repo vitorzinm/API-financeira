@@ -13,8 +13,18 @@ class UsuariosRepository {
     return await this.db('usuarios').insert(usuarios)
   }
 
-  async listUsarios() {
-    return await this.db('usuarios').select('*')
+  async listUsarios(page, limit, offset) {
+    const movimentacoes = await this.db('movimentacoes')
+      .select('*')
+      .limit(limit)
+      .offset(offset)
+
+    return {
+      page,
+      limit,
+      offset,
+      movimentacoes,
+    }
   }
 
   async listUsuariosById(usuarios) {

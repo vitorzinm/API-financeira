@@ -16,9 +16,20 @@ class MovimentacoesRepository {
       .first()
   }
 
-  // async listMovimentacaoes() {
-  //   return await this.db('movimentacoes').select('*')
-  // }
+  async listMovimentacoes(page, limit, offset) {
+    const movimentacoes = await this.db('movimentacoes')
+      .select('*')
+      .limit(limit)
+      .offset(offset)
+
+    return {
+      page,
+      limit,
+      offset,
+      movimentacoes,
+    }
+  }
+
   async listMovimentacaoesOfUser(movimentacoes) {
     return await this.db('movimentacoes')
       .select('*')

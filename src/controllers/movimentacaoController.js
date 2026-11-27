@@ -25,10 +25,12 @@ class MovimentacoesController {
     return res.status(200).json(movimentacoes)
   }
 
-  // async index(req, res) {
-  //   const movimentacoes = await movimentacoesService.getAllMovimentacoes()
-  //   return res.status(200).json(movimentacoes)
-  // }
+  async index(req, res) {
+    const page = req.query.page || 1
+
+    const movimentacoes = await movimentacoesService.getAllMovimentacoes(page)
+    return res.status(200).json({ movimentacoes })
+  }
 
   async movimentacoesDeEntrada(req, res) {
     const { usuario_id } = req.params

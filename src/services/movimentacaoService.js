@@ -154,6 +154,12 @@ class MovimentacoesService {
     }
   }
 
+  async getAllMovimentacoes(page) {
+    const limit = 10
+    let offset = (page - 1) * limit
+    return await movimentacoesRepository.listMovimentacoes(page, limit, offset)
+  }
+
   async cadastroMovimentacao(movimentacao) {
     const dados = this.validarDados(movimentacao, true)
 

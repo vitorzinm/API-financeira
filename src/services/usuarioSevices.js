@@ -33,8 +33,10 @@ class UsuariosService {
     return await usuariosRepository.insertUsuarios(usuarios)
   }
 
-  async listarUsuarios() {
-    return await usuariosRepository.listUsarios()
+  async listarUsuarios(page) {
+    const limit = 10
+    let offset = (page - 1) * limit
+    return await usuariosRepository.listUsarios(page, limit, offset)
   }
 
   async getUsuariosById(usuarios) {

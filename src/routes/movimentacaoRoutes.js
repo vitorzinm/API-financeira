@@ -4,7 +4,7 @@ const router = express.Router()
 import { movimentacoesController as controller } from '../controllers/movimentacaoController.js'
 
 router.post('/', controller.store) //aplicado a integração com tabela usuarios
-// router.get('/', controller.index)
+router.get('/', controller.index)
 
 router.get(
   '/movimentacoesDeEntrada/:usuario_id',
